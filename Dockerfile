@@ -11,6 +11,12 @@
  
  # Build a release artifact.
  #RUN mvn package -DskipTests
+
+ # 将 Docker socket 文件挂载到容器中
+VOLUME ["/var/run/docker.sock"]
+
+# 设置环境变量
+ENV DOCKER_HOST=unix:///var/run/docker.sock
  
  #暴露项目的端口8080
  EXPOSE 8080

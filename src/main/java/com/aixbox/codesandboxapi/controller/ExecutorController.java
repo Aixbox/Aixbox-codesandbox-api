@@ -1,9 +1,10 @@
 package com.aixbox.codesandboxapi.controller;
 
+import com.aixbox.codesandbox.enums.LanguageCmdEnum;
 import com.aixbox.codesandbox.executor.DockerSandbox;
-import com.aixbox.codesandbox.executor.ExecuteMessage;
-import com.aixbox.codesandbox.executor.ExecuteRequest;
-import com.aixbox.codesandbox.executor.LanguageCmdEnum;
+
+import com.aixbox.codesandbox.model.ExecuteMessage;
+import com.aixbox.codesandbox.model.ExecuteRequest;
 import com.aixbox.codesandboxapi.common.BaseResponse;
 import com.aixbox.codesandboxapi.common.ErrorCode;
 import com.aixbox.codesandboxapi.common.ResultUtils;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description:
@@ -37,14 +40,19 @@ public class ExecutorController {
     private DockerSandbox dockerSandbox;
 
     @PostMapping("/executor")
-    public BaseResponse<ExecuteMessage> execute(@RequestBody ExecuteRequest executeRequest, HttpServletRequest httpServletRequest){
+    public BaseResponse<List<ExecuteMessage>> execute(@RequestBody ExecuteRequest executeRequest, HttpServletRequest httpServletRequest){
         doAuth(httpServletRequest);
         log.info("current interface is called, ip: {}", httpServletRequest.getRemoteAddr());
 
         String language = executeRequest.getLanguage();
         String code = executeRequest.getCode();
         LanguageCmdEnum languageCmdEnum = LanguageCmdEnum.getEnumByValue(language);
-        return ResultUtils.success(dockerSandbox.execute(languageCmdEnum, code));
+        List<ExecuteMessage> executeMessages = new ArrayList<>();
+        for (String input : executeRequest.getInputList()) {
+            ExecuteMessage execute = dockerSandbox.execute(languageCmdEnum, code, input);
+            executeMessages.add(execute);
+        }
+        return ResultUtils.success(executeMessages);
     }
 
     private void doAuth(HttpServletRequest httpServletRequest){
