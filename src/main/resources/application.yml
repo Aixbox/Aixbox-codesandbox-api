@@ -1,0 +1,15 @@
+server:
+  port: 8080
+rpc:
+  name: rpc
+  version: 2.0
+  serverHost: 192.168.20.128
+  serverPort: 8080
+  mock: false
+  serializer: json
+  auth: true
+  registryConfig:
+    registry: etcd
+    address: http://192.168.20.128:12379
+    username: root
+    password: 123456

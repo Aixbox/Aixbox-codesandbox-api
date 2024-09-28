@@ -14,7 +14,7 @@
     <name>codesandbox-api</name>
     <description>codesandbox-api</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.6.13</spring-boot.version>
@@ -24,6 +24,12 @@
             <groupId>com.aixbox</groupId>
             <artifactId>online-code-executor-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://hutool.cn/docs/index.html#/-->
         <dependency>
@@ -51,7 +57,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.aixbox</groupId>
+            <artifactId>rpc-spring-boot-starter</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
 
     </dependencies>
@@ -74,8 +84,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
